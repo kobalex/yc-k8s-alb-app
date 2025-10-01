@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    ingress.alb.yc.io/subnets: e9br3gg4pqu6s39nc09p
+    ingress.alb.yc.io/security-groups: enpsbgnjq5sjv06oujr2
+    ingress.alb.yc.io/external-ipv4-address: auto
+    ingress.alb.yc.io/group-name: my-ingress-group
+spec:
+  rules:
+    - host: ingress.kobets
+      http:
+        paths:
+          - path: /app1
+            pathType: Prefix
+            backend:
+              service:
+                name: alb-app-demo1
+                port:
+                  number: 80
+          - path: /app2
+            pathType: Prefix
+            backend:
+              service:
+                name: alb-app-demo2
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: alb-app-demo1
+                port:
+                  name: http
